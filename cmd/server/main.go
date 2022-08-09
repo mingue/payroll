@@ -10,15 +10,17 @@ import (
 )
 
 func main() {
-	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime|log.Lmicroseconds|log.Lshortfile)
+	logger := log.New(os.Stdout, "Payroll", log.Ldate|log.Ltime|log.Lmicroseconds|log.Lshortfile)
 
-	var getInvoicesDecorated http.Handler
-	getInvoicesDecorated = h.NewRequestLoggingDecorator(handlers.GetInvoiceHandler{}, logger)
-	getInvoicesDecorated = h.NewPanicRecoveryDecorator(getInvoicesDecorated, logger)
-
-	http.Handle("/invoices", getInvoicesDecorated)
+	http.Handle("/invoices", GetInvoicesHandler(logger))
 
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatalf("Couldn't start the server: %v", err.Error())
 	}
+}
+
+func GetInvoicesHandler(logger *log.Logger) http.Handler {
+	getInvoicesDecorated := h.NewRequestLoggingDecorator(handlers.NewInvoiceHandler(), logger)
+	getInvoicesDecorated = h.NewPanicRecoveryDecorator(getInvoicesDecorated, logger)
+	return getInvoicesDecorated
 }
