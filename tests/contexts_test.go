@@ -48,7 +48,7 @@ func TestEarlyCancellation(t *testing.T) {
 		ch <- 2
 	}()
 
-	time.Sleep(100)
+	time.Sleep(100 * time.Millisecond)
 
 	select {
 	case val := <-ch:
