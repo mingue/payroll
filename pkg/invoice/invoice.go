@@ -1,6 +1,13 @@
 package invoice
 
+import "time"
+
 type Invoice struct {
-	ID uint64
-	FinancialYear uint16
+	Id            int
+	InvoiceDate   time.Time
+	PaymentDate   time.Time
+	Amount        float32
+	FinancialYear int
+	GST           float32
+	CountryIsoCode    string
 }

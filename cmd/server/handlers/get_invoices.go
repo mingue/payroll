@@ -17,12 +17,12 @@ type GetInvoiceHandler struct {
 
 func NewInvoiceHandler() GetInvoiceHandler {
 	return GetInvoiceHandler{
-		svc: i.NewService(r.InvoiceRepository{}),
+		svc: i.NewService(&r.InvoiceRepository{}),
 	}
 }
 
 func (handler GetInvoiceHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	invoices := handler.svc.GetAllByFinancialYear(uint16(time.Now().Year()))
+	invoices := handler.svc.GetByFinancialYearAndCountryIsoCode(time.Now().Year(), "NZ")
 	fmt.Printf("Obtained %v invoices\n", len(invoices))
 
 	// panic("Panic!! trying to recover")

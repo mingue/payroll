@@ -10,6 +10,6 @@ func NewService(r Repository) Service {
 	}
 }
 
-func (s Service) GetAllByFinancialYear(y uint16) []Invoice {
-	return s.repository.GetByFinancialYear(y)
+func (s Service) GetByFinancialYearAndCountryIsoCode(y int, countryIsoCode string) []Invoice {
+	return s.repository.GetByFinancialYearAndCountryIsoCode(y, countryIsoCode)
 }
