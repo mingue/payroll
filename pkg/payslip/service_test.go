@@ -15,7 +15,7 @@ func TestService(t *testing.T) {
 	f := NetSalaryCalculatorFactory{}
 	s := NewService(r, ir, f)
 
-	t.Run("It should call repository when invokes GetByFinancialYear", func(t *testing.T) {
+	t.Run("CreatePayslip should save a Payslip", func(t *testing.T) {
 		now := time.Now()
 		countryCode := "NZ"
 
@@ -27,10 +27,14 @@ func TestService(t *testing.T) {
 		r.On("GetByFinancialYearAndCountryIsoCode", now.Year(), countryCode).
 			Return(Payslip{Id: 1})
 
+		r.On("Save", &Payslip{Id: 1})
+
 		payslip := s.CreatePayslip(now, countryCode)
 
 		assert.NotNil(t, payslip)
 		assert.Equal(t, 1, payslip.Id)
+		ir.AssertExpectations(t)
+		r.AssertExpectations(t)
 	})
 }
 
